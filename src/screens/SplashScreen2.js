@@ -44,7 +44,7 @@ function SplashScreen2({navigation}) {
   });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ImageBackground
         source={require('../assets/images/splash/bg.png')}
         resizeMode="cover"
@@ -66,14 +66,13 @@ function SplashScreen2({navigation}) {
             source={require('../assets/images/splash/logo.png')}></Image>
         </Animated.View>
       </ImageBackground>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   image: {
     flex: 1,

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -20,11 +20,13 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
+  Keyboard,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect} from 'react-redux';
+import * as actions from '../store/Actions/index';
 
 function ModalPopup({visible, children}) {
   const [showModal, setshowModal] = React.useState(visible);
@@ -70,11 +72,42 @@ function ModalPopup({visible, children}) {
   );
 }
 
-function LoginScreen({navigation}) {
+function LoginScreen({navigation, UserReducer, user_login}) {
   const [data, setData] = useState({
     email: '',
     password: '',
   });
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  const [inputBackgroundPassword, setinputBackgroundPassword] =
+    React.useState('gray');
+
+  const [inputBackgroundPasswordCn, setinputBackgroundPasswordCn] =
+    React.useState('gray');
+
+  const [inputBackgroundEmail, setinputBackgroundEmail] =
+    React.useState('gray');
 
   const [visible, setvisible] = React.useState(false);
 
@@ -93,17 +126,9 @@ function LoginScreen({navigation}) {
     }
   };
 
-  const storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem('@token', value);
-    } catch (e) {
-      // saving error
-    }
-  };
-
   const login = async () => {
-    navigation.navigate('Register');
-    return false;
+    // navigation.navigate('Register');
+    // return false;
     setEmailError('');
     setPasswordError('');
     var body = JSON.stringify({
@@ -113,7 +138,7 @@ function LoginScreen({navigation}) {
 
     var config = {
       method: 'post',
-      url: 'https://e717-221-132-115-66.ap.ngrok.io/api/login',
+      url: 'https://b4a7-37-111-136-145.ap.ngrok.io/api/login',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -125,10 +150,11 @@ function LoginScreen({navigation}) {
         if (response.data.success) {
           //          token = response.data.data.token;
           // await
+
           AsyncStorage.setItem('@token', response.data.data.token).then(() => {
             AsyncStorage.getItem('@token').then(r => {
               if (r.length > 0) {
-                // navigation.navigate('Home');
+                navigation.navigate('Home');
               } else {
                 setEmailError('Something went wrong');
               }
@@ -152,6 +178,36 @@ function LoginScreen({navigation}) {
           }
         }
       });
+  };
+
+  const _onPressLogIn = () => {
+    setEmailError('');
+    setPasswordError('');
+    var body = JSON.stringify({
+      email: data.email,
+      password: data.password,
+    });
+
+    user_login(body).then(() => {
+      if (!UserReducer.success) {
+        if (UserReducer.data) {
+          let arr = UserReducer.data;
+          for (let key of Object.entries(arr)) {
+            if (key[0] == 'email') {
+              setEmailError(key[1][0]);
+            } else if (key[0] == 'password') {
+              setPasswordError(key[1][0]);
+            } else if (key[0] == 'invalid') {
+              setEmailError(key[1]);
+            }
+          }
+        }
+      } else {
+        setEmailError('');
+        setPasswordError('');
+        console.log('success', UserReducer);
+      }
+    });
   };
 
   return (
@@ -180,10 +236,10 @@ function LoginScreen({navigation}) {
           }}>
           <Image source={require('../assets/images/logo-sm.png')} />
         </TouchableHighlight>
-        <View style={{flex: 0.25}}></View>
+        <View style={{flex: 0.27}}></View>
         <View
           style={{
-            flex: 0.75,
+            flex: 0.73,
           }}>
           <Text
             style={{
@@ -199,7 +255,6 @@ function LoginScreen({navigation}) {
 
           <Text
             style={{
-              marginBottom: 30,
               textAlign: 'center',
               fontWeight: 'bold',
               fontSize: 12,
@@ -212,25 +267,28 @@ function LoginScreen({navigation}) {
 
           <View
             style={{
+              marginTop: '3%',
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: '#fff',
               borderWidth: 0.5,
-              borderColor: '#c62358',
-              height: 40,
+              borderColor: inputBackgroundEmail,
+              height: '8%',
               borderRadius: 15,
-              margin: 10,
+              margin: 0,
               borderWidth: 1,
             }}>
             <Feather
               style={{marginLeft: 10}}
-              color={'#c62358'}
+              color={inputBackgroundEmail}
               name="user-plus"
               size={18}
             />
             <TextInput
-              placeholderTextColor="#c62358"
+              onFocus={() => setinputBackgroundEmail('#c62358')}
+              onBlur={() => setinputBackgroundEmail('gray')}
+              placeholderTextColor={inputBackgroundEmail}
               style={{
                 flex: 1,
                 fontSize: 16,
@@ -247,31 +305,35 @@ function LoginScreen({navigation}) {
               underlineColorAndroid="transparent"
               onChangeText={email => textInputChange('email', email)}
             />
-
-            <Text style={styles.errorMsg}> {emailError}</Text>
           </View>
+
+          <Text style={styles.errorMsg}> {emailError}</Text>
 
           <View
             style={{
+              marginTop: '3%',
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: '#fff',
               borderWidth: 0.5,
-              borderColor: '#c62358',
-              height: 40,
+              borderColor: inputBackgroundPassword,
+              height: '8%',
               borderRadius: 15,
-              margin: 10,
+              margin: 0,
               borderWidth: 1,
             }}>
             <Feather
               style={{marginLeft: 10}}
-              color={'#c62358'}
+              color={inputBackgroundPassword}
               name="unlock"
               size={18}
             />
+
             <TextInput
-              placeholderTextColor="#c62358"
+              onFocus={() => setinputBackgroundPassword('#c62358')}
+              onBlur={() => setinputBackgroundPassword('gray')}
+              placeholderTextColor={inputBackgroundPassword}
               style={{
                 flex: 1,
                 fontSize: 16,
@@ -281,16 +343,14 @@ function LoginScreen({navigation}) {
                 borderRadius: 5,
                 padding: 5,
                 margin: 2,
-                borderColor: '#c62358',
                 tintColor: '#c62358',
               }}
               placeholder="Password"
               underlineColorAndroid="transparent"
               onChangeText={password => textInputChange('password', password)}
             />
-
-            <Text style={styles.errorMsg}> {passwordError} </Text>
           </View>
+          <Text style={styles.errorMsg}> {passwordError} </Text>
 
           <TouchableOpacity
             onPress={() => {
@@ -303,12 +363,12 @@ function LoginScreen({navigation}) {
             <Text
               style={{
                 textAlign: 'right',
-                fontWeight: 'bold',
+                fontWeight: '900',
                 fontSize: 14,
-                width: 300,
+                width: '100%',
                 fontFamily: 'louis george cafe',
-                opacity: 0.699999988079071,
                 color: '#303030',
+                textDecorationLine: 'underline',
               }}>
               Forgot Password?
             </Text>
@@ -316,11 +376,12 @@ function LoginScreen({navigation}) {
 
           <TouchableOpacity
             onPress={() => {
-              setotp(true);
-              setforgetPassword(false);
-              setresetPassword(false);
-              setpasswordChanged(false);
-              setvisible(true);
+              // setotp(true);
+              // setforgetPassword(false);
+              // setresetPassword(false);
+              // setpasswordChanged(false);
+              // setvisible(true);
+              _onPressLogIn();
             }}
             style={{
               position: 'relative',
@@ -329,7 +390,7 @@ function LoginScreen({navigation}) {
               borderRadius: 20,
               alignItems: 'center',
               height: '8%',
-              marginTop: 15,
+              marginTop: '3%',
             }}>
             <Text
               style={{
@@ -349,7 +410,7 @@ function LoginScreen({navigation}) {
               width: 300,
               fontFamily: 'louis george cafe',
               opacity: 0.699999988079071,
-              marginTop: 30,
+              marginTop: '3%',
               color: 'gray',
             }}>
             Or connect using
@@ -378,7 +439,7 @@ function LoginScreen({navigation}) {
               borderRadius: 20,
               alignItems: 'center',
               height: '8%',
-              marginTop: 15,
+              marginTop: '3%',
             }}>
             <Text
               style={{
@@ -415,7 +476,7 @@ function LoginScreen({navigation}) {
               borderRadius: 20,
               alignItems: 'center',
               height: '8%',
-              marginTop: 15,
+              marginTop: '3%',
             }}>
             <Text
               style={{
@@ -432,12 +493,11 @@ function LoginScreen({navigation}) {
           <Text
             style={{
               textAlign: 'center',
-              fontWeight: 'bold',
+              fontWeight: '900',
               fontSize: 16,
-              width: 300,
               fontFamily: 'louis george cafe',
               opacity: 0.699999988079071,
-              marginTop: 30,
+              marginTop: '8%',
               color: '#303030',
             }}>
             Don't have an account?
@@ -445,9 +505,11 @@ function LoginScreen({navigation}) {
               onPress={() => navigation.navigate('Register')}
               style={{
                 color: '#c62358',
-                fontWeight: '800',
+                fontWeight: 'bold',
+                fontSize: 17,
                 textDecorationLine: 'underline',
               }}>
+              {' '}
               Sign Up
             </Text>
           </Text>
@@ -459,7 +521,7 @@ function LoginScreen({navigation}) {
           <View
             style={{
               width: '100%',
-              height: '50%',
+              height: isKeyboardVisible ? '100%' : '50%',
               position: 'absolute',
               bottom: 0,
               backgroundColor: 'white',
@@ -472,7 +534,7 @@ function LoginScreen({navigation}) {
               style={{
                 alignSelf: 'center',
                 position: 'absolute',
-                top: -20,
+                top: '-7%',
               }}>
               <Text
                 onPress={() => {
@@ -493,10 +555,10 @@ function LoginScreen({navigation}) {
               style={{
                 fontWeight: '800',
                 fontSize: 24,
-                width: 300,
+                width: '100%',
                 color: 'black',
                 fontFamily: 'titillium web',
-                marginTop: 5,
+                marginTop: '3%',
               }}>
               Forgot Password
             </Text>
@@ -505,10 +567,10 @@ function LoginScreen({navigation}) {
               style={{
                 fontWeight: '600',
                 fontSize: 14,
-                width: 300,
+                width: '100%',
                 fontFamily: 'louis george cafe',
                 color: 'lightgrgraay',
-                marginTop: 5,
+                marginTop: '1%',
               }}>
               Enter your email for the verification process, We will send 4
               digits code to your email
@@ -521,7 +583,7 @@ function LoginScreen({navigation}) {
                 width: 300,
                 fontFamily: 'louis george cafe',
                 color: '',
-                marginTop: 20,
+                marginTop: '5%',
               }}>
               Email:
             </Text>
@@ -530,7 +592,7 @@ function LoginScreen({navigation}) {
               placeholderTextColor="#c62358"
               pla
               style={{
-                marginTop: 15,
+                marginTop: '3%',
                 fontSize: 16,
                 fontWeight: 'bold',
                 backgroundColor: '#fff',
@@ -567,8 +629,8 @@ function LoginScreen({navigation}) {
                 justifyContent: 'center',
                 borderRadius: 20,
                 alignItems: 'center',
-                height: '12%',
-                marginTop: 15,
+                height: '15%',
+                marginTop: '3%',
               }}>
               <Text
                 style={{
@@ -587,7 +649,7 @@ function LoginScreen({navigation}) {
           <View
             style={{
               width: '100%',
-              height: '50%',
+              height: isKeyboardVisible ? '100%' : '50%',
               position: 'absolute',
               bottom: 0,
               backgroundColor: 'white',
@@ -600,7 +662,7 @@ function LoginScreen({navigation}) {
               style={{
                 alignSelf: 'center',
                 position: 'absolute',
-                top: -20,
+                top: '-7%',
               }}>
               <Text
                 onPress={() => {
@@ -621,10 +683,10 @@ function LoginScreen({navigation}) {
               style={{
                 fontWeight: '800',
                 fontSize: 24,
-                width: 300,
+                width: '100%',
                 color: 'black',
                 fontFamily: 'titillium web',
-                marginTop: 5,
+                marginTop: '3%',
               }}>
               Enter 4 Digit Code
             </Text>
@@ -636,7 +698,7 @@ function LoginScreen({navigation}) {
                 width: 300,
                 fontFamily: 'louis george cafe',
                 color: 'lightgrgraay',
-                marginTop: 5,
+                marginTop: '1%',
               }}>
               Enter 4 digit code that you received on your email.
             </Text>
@@ -724,8 +786,8 @@ function LoginScreen({navigation}) {
                 justifyContent: 'center',
                 borderRadius: 20,
                 alignItems: 'center',
-                height: '12%',
-                marginTop: 15,
+                height: '15%',
+                marginTop: '3%',
               }}>
               <Text
                 style={{
@@ -744,7 +806,7 @@ function LoginScreen({navigation}) {
           <View
             style={{
               width: '100%',
-              height: '60%',
+              height: isKeyboardVisible ? '100%' : '60%',
               position: 'absolute',
               bottom: 0,
               backgroundColor: 'white',
@@ -757,7 +819,7 @@ function LoginScreen({navigation}) {
               style={{
                 alignSelf: 'center',
                 position: 'absolute',
-                top: -20,
+                top: '-7%',
               }}>
               <Text
                 onPress={() => {
@@ -778,10 +840,10 @@ function LoginScreen({navigation}) {
               style={{
                 fontWeight: '800',
                 fontSize: 24,
-                width: 300,
+                width: '100%',
                 color: 'black',
                 fontFamily: 'titillium web',
-                marginTop: 5,
+                marginTop: '3%',
               }}>
               Reset Password
             </Text>
@@ -793,7 +855,7 @@ function LoginScreen({navigation}) {
                 width: 300,
                 fontFamily: 'louis george cafe',
                 color: 'lightgrgraay',
-                marginTop: 5,
+                marginTop: '1%',
               }}>
               Set the new password for your account so you can login and access
               all the features.
@@ -802,64 +864,116 @@ function LoginScreen({navigation}) {
             <Text
               style={{
                 fontWeight: '700',
-                fontSize: 18,
+                fontSize: 16,
                 width: 300,
                 fontFamily: 'louis george cafe',
                 color: '',
-                marginTop: 20,
+                marginTop: '3%',
               }}>
               Password:
             </Text>
 
-            <TextInput
-              placeholderTextColor="#c62358"
-              pla
+            <View
               style={{
-                marginTop: 15,
-                fontSize: 16,
-                fontWeight: 'bold',
+                marginTop: '3%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
                 backgroundColor: '#fff',
-                color: '#c62358',
-                borderRadius: 5,
-                padding: 5,
-                borderColor: '#c62358',
-                tintColor: '#c62358',
+                borderWidth: 0.5,
+                borderColor: inputBackgroundPassword,
+                height: '12%',
                 borderRadius: 15,
-                borderWidth: 1.5,
-              }}
-              placeholder="********"
-            />
+                margin: 0,
+                borderWidth: 1,
+              }}>
+              <Feather
+                style={{marginLeft: 10}}
+                color={inputBackgroundPassword}
+                name="unlock"
+                size={18}
+              />
+
+              <TextInput
+                onFocus={() => setinputBackgroundPassword('#c62358')}
+                onBlur={() => setinputBackgroundPassword('gray')}
+                placeholderTextColor={inputBackgroundPassword}
+                style={{
+                  flex: 1,
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  backgroundColor: '#fff',
+                  color: '#c62358',
+                  borderRadius: 5,
+                  padding: 5,
+                  margin: 2,
+                  tintColor: '#c62358',
+                }}
+                placeholder="********"
+                underlineColorAndroid="transparent"
+                onChangeText={password =>
+                  textInputChange('resetpassword', password)
+                }
+              />
+
+              <Text style={styles.errorMsg}> {passwordError} </Text>
+            </View>
 
             <Text
               style={{
                 fontWeight: '700',
-                fontSize: 18,
-                width: 300,
+                fontSize: 16,
+                width: '100%',
                 fontFamily: 'louis george cafe',
                 color: '',
-                marginTop: 20,
+                marginTop: '3%',
               }}>
               Re-Enter Password:
             </Text>
 
-            <TextInput
-              placeholderTextColor="#c62358"
-              pla
+            <View
               style={{
-                marginTop: 15,
-                fontSize: 16,
-                fontWeight: 'bold',
+                marginTop: '3%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
                 backgroundColor: '#fff',
-                color: '#c62358',
-                borderRadius: 5,
-                padding: 5,
-                borderColor: '#c62358',
-                tintColor: '#c62358',
+                borderWidth: 0.5,
+                borderColor: setinputBackgroundPasswordCn,
+                height: '12%',
                 borderRadius: 15,
-                borderWidth: 1.5,
-              }}
-              placeholder="********"
-            />
+                borderWidth: 1,
+              }}>
+              <Feather
+                style={{marginLeft: 10}}
+                color={inputBackgroundPassword}
+                name="unlock"
+                size={18}
+              />
+
+              <TextInput
+                onFocus={() => setinputBackgroundPasswordCn('#c62358')}
+                onBlur={() => setinputBackgroundPasswordCn('gray')}
+                placeholderTextColor={inputBackgroundPassword}
+                style={{
+                  flex: 1,
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  backgroundColor: '#fff',
+                  color: '#c62358',
+                  borderRadius: 5,
+                  padding: 5,
+                  tintColor: '#c62358',
+                }}
+                placeholder="********"
+                underlineColorAndroid="transparent"
+                onChangeText={password =>
+                  textInputChange('resetpassword', password)
+                }
+              />
+
+              <Text style={styles.errorMsg}> {passwordError} </Text>
+            </View>
 
             <TouchableOpacity
               onPress={() => {
@@ -875,8 +989,8 @@ function LoginScreen({navigation}) {
                 justifyContent: 'center',
                 borderRadius: 20,
                 alignItems: 'center',
-                height: '12%',
-                marginTop: 15,
+                height: '15%',
+                marginTop: '5%',
               }}>
               <Text
                 style={{
@@ -895,7 +1009,7 @@ function LoginScreen({navigation}) {
           <View
             style={{
               width: '100%',
-              height: '50%',
+              height: isKeyboardVisible ? '100%' : '50%',
               position: 'absolute',
               bottom: 0,
               backgroundColor: 'white',
@@ -903,10 +1017,11 @@ function LoginScreen({navigation}) {
               paddingVertical: 20,
               borderRadius: 20,
               elevation: 20,
+              flex: 1,
             }}>
             <View
               style={{
-                marginTop: 40,
+                marginTop: '10%',
                 height: '20%',
                 width: '20%',
                 backgroundColor: '#2ecc71',
@@ -918,75 +1033,38 @@ function LoginScreen({navigation}) {
               <MaterialIcons color={'#fff'} name="done" size={50} />
             </View>
 
-            <View
+            <Text
               style={{
-                flex: 0.5,
-                flexDirection: 'row',
-                borderColor: 'red',
+                textAlign: 'center',
+                justifyContent: 'center',
                 alignItems: 'center',
+                fontWeight: '800',
+                fontSize: 24,
+                width: '100%',
+                color: 'black',
+                fontFamily: 'titillium web',
+                marginTop: '1%',
               }}>
-              <View
-                style={{
-                  flex: 0.2,
-                  flexDirection: 'row',
-                }}></View>
-              <View
-                style={{
-                  flex: 0.6,
-                  flexDirection: 'column',
-                  borderColor: 'red',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    fontWeight: '800',
-                    fontSize: 24,
-                    width: 300,
-                    color: 'black',
-                    fontFamily: 'titillium web',
-                    marginTop: 5,
-                  }}>
-                  Password Changed!
-                </Text>
+              Password Changed!
+            </Text>
 
-                <Text
-                  style={{
-                    fontWeight: '600',
-                    fontSize: 14,
-                    width: 300,
-                    fontFamily: 'louis george cafe',
-                    color: 'lightgrgraay',
-                    marginTop: 5,
-                  }}>
-                  Your password has been changes Successfully.
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  flex: 0.2,
-                  flexDirection: 'row',
-                }}></View>
-            </View>
+            <Text
+              style={{
+                textAlign: 'center',
+                justifyContent: 'center',
+                fontWeight: '600',
+                fontSize: 16,
+                width: 300,
+                fontFamily: 'louis george cafe',
+                color: 'lightgrgraay',
+                margin: '1%',
+              }}>
+              Your password has been changed Successfully.
+            </Text>
 
             <TouchableOpacity
               onPress={() => {
-                Alert.alert(
-                  'Confirmation',
-                  'Are you sure you entered correct details',
-                  [
-                    {
-                      text: 'Yes',
-                      onPress: () => {
-                        login();
-                      },
-                    },
-                    {text: 'No'},
-                  ],
-                );
+                setvisible(false);
               }}
               style={{
                 position: 'relative',
@@ -994,13 +1072,10 @@ function LoginScreen({navigation}) {
                 justifyContent: 'center',
                 borderRadius: 20,
                 alignItems: 'center',
-                height: '12%',
-                marginTop: 15,
+                height: '15%',
+                marginTop: '5%',
               }}>
               <Text
-                onPress={() => {
-                  setvisible(false);
-                }}
                 style={{
                   color: '#fff',
                   fontSize: 16,
@@ -1052,4 +1127,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+// export default LogIn;
+const mapStateToProps = ({UserReducer}) => {
+  return {UserReducer};
+};
+
+export default connect(mapStateToProps, actions)(LoginScreen);

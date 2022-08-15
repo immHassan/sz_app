@@ -9,7 +9,10 @@ import FavoriteScreen from '../screens/FavoriteScreen';
 import GameDetailsScreen from '../screens/GameDetailsScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import ScheduleScreen from '../screens/ScheduleScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -18,8 +21,8 @@ const HomeStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Schedule"
+        component={ScheduleScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -39,9 +42,9 @@ const TabNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: {backgroundColor: '#121212'},
-        tabBarInactiveTintColor: '#fff',
-        tabBarActiveTintColor: 'yellow',
+        tabBarStyle: {backgroundColor: 'red'},
+        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: '#c62358',
       }}>
       <Tab.Screen
         name="Home2"
@@ -49,7 +52,7 @@ const TabNavigator = () => {
         options={({route}) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
-            backgroundColor: '#121212',
+            backgroundColor: 'white',
           },
           tabBarIcon: ({color, size}) => (
             <Ionicons name="home-outline" color={color} size={size} />
@@ -66,28 +69,35 @@ const TabNavigator = () => {
             backgroundColor: '#121212',
           },
           tabBarIcon: ({color, size}) => (
-            <Ionicons name="calendar-sharp" color={color} size={size} />
+            <Feather name="shopping-cart" color={color} size={size} />
           ),
         })}
       />
 
       <Tab.Screen
+        name="Favorite"
+        component={SettingsScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name="settings-outline" color={color} size={size} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
         name="Cart"
         component={CartScreen}
+        listeners={({navigation}) => ({
+          tabPress: e => {
+            navigation.openDrawer();
+            e.preventDefault();
+          },
+        })}
         options={{
           tabBarBadge: 3,
           tabBarBadgeStyle: {backgroundColor: 'yellow'},
           tabBarIcon: ({color, size}) => (
-            <Feather name="shopping-bag" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Favorite"
-        component={FavoriteScreen}
-        options={{
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name="heart-outline" color={color} size={size} />
+            <FontAwesome name="user-circle-o" color={color} size={size} />
           ),
         }}
       />

@@ -103,95 +103,102 @@ function SplashScreen3({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
-        ref={scrollViewRef}
-        onScroll={({nativeEvent}) => onchange(nativeEvent)}
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled
-        horizontal
-        style={styles.wrap}>
-        {images.map((e, index) => (
-          <View key={index}>
-            <View style={{flex: 0.5}}>
-              <View>
-                <Image key={index} style={styles.image} source={e.img} />
-              </View>
-            </View>
-
-            <View
-              style={{
-                alignItems: 'center',
-                flex: 0.4,
-                flexDirection: 'column',
-              }}>
-              <Image
-                key={index}
-                style={{marginTop: 30}}
-                resizeMode="stretch"
-                source={e.icon}
-              />
-
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  fontSize: 22,
-                  marginTop: 15,
-                  width: 300,
-                  color: '#141414',
-                  fontFamily: 'titillium web',
-                }}>
-                {e.heading}
-              </Text>
-
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  fontSize: 12,
-                  marginTop: 15,
-                  width: 300,
-                  fontFamily: 'louis george cafe',
-                  opacity: 0.699999988079071,
-                  marginTop: 15,
-                }}>
-                {e.text}
-              </Text>
-
-              <View style={styles.wrapDot}>
-                {images.map((e, index) => (
-                  <Text
-                    style={imgActive == index ? styles.dotActive : styles.dot}>
-                    ●
-                  </Text>
-                ))}
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+        }}>
+        <ScrollView
+          ref={scrollViewRef}
+          onScroll={({nativeEvent}) => onchange(nativeEvent)}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          horizontal
+          style={styles.wrap}>
+          {images.map((e, index) => (
+            <View key={index}>
+              <View style={{flex: 0.55}}>
+                <View style={{flex: 1}}>
+                  <Image key={index} style={styles.image} source={e.img} />
+                </View>
               </View>
 
-              <TouchableOpacity
-                onPress={toNextPage}
+              <View
                 style={{
-                  position: 'relative',
-                  height: '15%',
-                  backgroundColor: '#ed3760',
-                  justifyContent: 'center',
-                  width: '75%',
-                  borderRadius: 15,
                   alignItems: 'center',
+                  flex: 0.45,
                 }}>
+                <Image
+                  key={index}
+                  style={{marginTop: 20, height: '20%', width: '26%'}}
+                  resizeMode="stretch"
+                  source={e.icon}
+                />
+
                 <Text
                   style={{
-                    color: '#fff',
-                    fontSize: 16,
-                    fontFamily: 'louis george café',
-                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    fontWeight: '900',
+                    fontSize: 22,
+                    marginTop: 20,
+                    width: 300,
+                    color: '#141414',
+                    fontFamily: 'titillium web',
                   }}>
-                  {e.buttonText}
+                  {e.heading}
                 </Text>
-              </TouchableOpacity>
+
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 12,
+                    width: 300,
+                    fontFamily: 'louis george cafe',
+                    opacity: 0.699999988079071,
+                    marginTop: 5,
+                  }}>
+                  {e.text}
+                </Text>
+
+                <View style={styles.wrapDot}>
+                  {images.map((e, index) => (
+                    <Text
+                      style={
+                        imgActive == index ? styles.dotActive : styles.dot
+                      }>
+                      ●
+                    </Text>
+                  ))}
+                </View>
+
+                <TouchableOpacity
+                  onPress={toNextPage}
+                  style={{
+                    position: 'relative',
+                    height: '12%',
+                    backgroundColor: '#ed3760',
+                    justifyContent: 'center',
+                    width: '75%',
+                    borderRadius: 15,
+                    alignItems: 'center',
+                    marginTop: 5,
+                  }}>
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontSize: 16,
+                      fontFamily: 'louis george café',
+                      fontWeight: 'bold',
+                    }}>
+                    {e.buttonText}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        ))}
-      </ScrollView>
+          ))}
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -202,13 +209,14 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    maxHeight: Dimensions.get('window').height,
   },
   image: {
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
+    resizeMode: 'cover',
     width: Dimensions.get('window').width,
-    height: '100%', //Dimensions.get('window').height, //362 is actual height of image
+    height: '100%',
   },
   logo: {},
   wrapDot: {
@@ -220,11 +228,13 @@ const styles = StyleSheet.create({
   dotActive: {
     margin: 3,
     color: '#ed3760',
+    fontSize: 8,
   },
   dot: {
     margin: 3,
     color: '#fff',
     borderColor: '#ed3760',
+    fontSize: 8,
   },
 });
 

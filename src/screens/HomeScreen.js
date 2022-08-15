@@ -19,7 +19,10 @@ import {freeGames, paidGames, sliderData} from '../model/data';
 import CustomSwitch from '../components/CustomSwitch';
 import ListItem from '../components/ListItem';
 
-export default function HomeScreen({navigation}) {
+import {connect} from 'react-redux';
+import * as actions from '../store/Actions/index';
+
+function HomeScreen({navigation, UserReducer}) {
   const [gamesTab, setGamesTab] = useState(1);
 
   const renderBanner = ({item, index}) => {
@@ -140,3 +143,10 @@ export default function HomeScreen({navigation}) {
     </SafeAreaView>
   );
 }
+
+// export default LogIn;
+const mapStateToProps = ({UserReducer}) => {
+  return {UserReducer};
+};
+
+export default connect(mapStateToProps, actions)(HomeScreen);

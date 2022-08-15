@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {
   StyleSheet,
@@ -23,16 +25,31 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function RegisterScreen({navigation}) {
+  const [inputBackgroundPassword, setinputBackgroundPassword] =
+    React.useState('gray');
+
+  const [inputBackgroundPasswordCn, setinputBackgroundPasswordCn] =
+    React.useState('gray');
+
+  const [inputBackgroundEmail, setinputBackgroundEmail] =
+    React.useState('gray');
+
+  const [inputBackgroundUserName, setinputBackgroundUserName] =
+    React.useState('gray');
+
+  const [inputBackgroundUserPhone, setinputBackgroundUserPhone] =
+    React.useState('gray');
+
   const [data, setData] = useState({
     email: '',
     password: '',
   });
 
   const [UserNameError, setUserNameError] = useState('');
-  const [EmailError, setEmailError] = useState('');
+  const [emailError, setemailError] = useState('');
   const [PhoneError, setPhoneError] = useState('');
-  const [PasswordError, setPasswordError] = useState('');
-  const [ConfirmPasswordError, setConfirmPasswordError] = useState('');
+  const [passwordError, setpasswordError] = useState('');
+  const [ConfirmpasswordError, setConfirmpasswordError] = useState('');
 
   const textInputChange = (key, val) => {
     if (val.length) {
@@ -51,10 +68,10 @@ function RegisterScreen({navigation}) {
 
   const login = async () => {
     setUserNameError('');
-    setEmailError('');
+    setemailError('');
     setPhoneError('');
-    setPasswordError('');
-    setConfirmPasswordError('');
+    setpasswordError('');
+    setConfirmpasswordError('');
 
     var body = JSON.stringify({
       email: data.email,
@@ -80,7 +97,7 @@ function RegisterScreen({navigation}) {
               if (r.length > 0) {
                 // navigation.navigate('Home');
               } else {
-                setEmailError('Something went wrong');
+                setemailError('Something went wrong');
               }
             });
           });
@@ -92,11 +109,11 @@ function RegisterScreen({navigation}) {
             let arr = error.response.data.data;
             for (let key of Object.entries(arr)) {
               if (key[0] == 'email') {
-                setEmailError(key[1][0]);
+                setemailError(key[1][0]);
               } else if (key[0] == 'password') {
-                setPasswordError(key[1][0]);
+                setpasswordError(key[1][0]);
               } else if (key[0] == 'invalid') {
-                setEmailError(key[1]);
+                setemailError(key[1]);
               }
             }
           }
@@ -130,10 +147,10 @@ function RegisterScreen({navigation}) {
           }}>
           <Image source={require('../assets/images/logo-sm.png')} />
         </TouchableHighlight>
-        <View style={{flex: 0.25}}></View>
+        <View style={{flex: 0.27}}></View>
         <View
           style={{
-            flex: 0.75,
+            flex: 0.73,
           }}>
           <Text
             style={{
@@ -148,7 +165,6 @@ function RegisterScreen({navigation}) {
           </Text>
           <Text
             style={{
-              marginBottom: 30,
               textAlign: 'center',
               fontWeight: 'bold',
               fontSize: 12,
@@ -158,100 +174,222 @@ function RegisterScreen({navigation}) {
             }}>
             Create an account to Strike Zone to get all features
           </Text>
-          <TextInput
-            placeholderTextColor="#c62358"
-            pla
+
+          <View
             style={{
-              fontSize: 16,
-              fontWeight: 'bold',
+              marginTop: '3%',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
               backgroundColor: '#fff',
-              color: '#c62358',
-              borderRadius: 5,
-              padding: 5,
-              margin: 2,
-              borderColor: '#c62358',
-              tintColor: '#c62358',
+              borderWidth: 0.5,
+              borderColor: inputBackgroundUserName,
+              height: '10%',
               borderRadius: 15,
-              borderWidth: 1.5,
-            }}
-            placeholder="User Name"
-            onChangeText={user_name => textInputChange('user_name', user_name)}
-          />
-          <Text style={styles.errorMsg}> {UserNameError}</Text>
+              margin: 0,
+              borderWidth: 1,
+            }}>
+            <Feather
+              style={{marginLeft: 10}}
+              color={inputBackgroundUserName}
+              name="user-plus"
+              size={18}
+            />
+            <TextInput
+              onFocus={() => setinputBackgroundUserName('#c62358')}
+              onBlur={() => setinputBackgroundUserName('gray')}
+              placeholderTextColor={inputBackgroundUserName}
+              style={{
+                flex: 1,
+                fontSize: 16,
+                fontWeight: 'bold',
+                backgroundColor: '#fff',
+                color: '#c62358',
+                borderRadius: 5,
+                padding: 5,
+                margin: 2,
+                borderColor: '#c62358',
+                tintColor: '#c62358',
+              }}
+              placeholder="User Name"
+              underlineColorAndroid="transparent"
+              onChangeText={email => textInputChange('email', email)}
+            />
 
-          <TextInput
-            style={{
-              fontSize: 16,
-              fontWeight: 'bold',
-              backgroundColor: '#f5f5f5',
-              color: '#c62358',
-              borderRadius: 5,
-              padding: 5,
-              margin: 2,
-              borderColor: '#f5f5f5',
-              borderRadius: 15,
-              borderWidth: 1.5,
-            }}
-            placeholder="Email"
-            onChangeText={email => textInputChange('email', email)}
-          />
-          <Text style={styles.errorMsg}> {EmailError}</Text>
+            <Text style={styles.errorMsg}> {emailError}</Text>
+          </View>
 
-          <TextInput
+          <View
             style={{
-              fontSize: 16,
-              fontWeight: 'bold',
-              backgroundColor: '#f5f5f5',
-              color: '#c62358',
-              borderRadius: 5,
-              padding: 5,
-              margin: 2,
-              borderColor: '#f5f5f5',
+              marginTop: '3%',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+              borderWidth: 0.5,
+              borderColor: inputBackgroundEmail,
+              height: '10%',
               borderRadius: 15,
-              borderWidth: 1.5,
-            }}
-            placeholder="Phone"
-            onChangeText={phone => textInputChange('phone', phone)}
-          />
-          <Text style={styles.errorMsg}> {PhoneError}</Text>
+              margin: 0,
+              borderWidth: 1,
+            }}>
+            <TextInput>@</TextInput>
+            <TextInput
+              onFocus={() => setinputBackgroundEmail('#c62358')}
+              onBlur={() => setinputBackgroundEmail('gray')}
+              placeholderTextColor={inputBackgroundEmail}
+              style={{
+                flex: 1,
+                fontSize: 16,
+                fontWeight: 'bold',
+                backgroundColor: '#fff',
+                color: '#c62358',
+                borderRadius: 5,
+                padding: 5,
+                margin: 2,
+                borderColor: '#c62358',
+                tintColor: '#c62358',
+              }}
+              placeholder="Email"
+              underlineColorAndroid="transparent"
+              onChangeText={email => textInputChange('email', email)}
+            />
+            <Text style={styles.errorMsg}> {emailError}</Text>
+          </View>
 
-          <TextInput
+          <View
             style={{
-              fontSize: 16,
-              fontWeight: 'bold',
-              backgroundColor: '#f5f5f5',
-              color: '#c62358',
-              borderRadius: 5,
-              padding: 5,
-              margin: 2,
-              borderColor: '#f5f5f5',
+              marginTop: '3%',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+              borderWidth: 0.5,
+              borderColor: inputBackgroundUserPhone,
+              height: '10%',
               borderRadius: 15,
-              borderWidth: 1.5,
-            }}
-            placeholder="Password"
-            onChangeText={password => textInputChange('password', password)}
-          />
-          <Text style={styles.errorMsg}> {PasswordError} </Text>
+              margin: 0,
+              borderWidth: 1,
+            }}>
+            <Feather
+              style={{marginLeft: 10}}
+              color={inputBackgroundUserPhone}
+              name="smartphone"
+              size={18}
+            />
+            <TextInput
+              onFocus={() => setinputBackgroundUserPhone('#c62358')}
+              onBlur={() => setinputBackgroundUserPhone('gray')}
+              placeholderTextColor={inputBackgroundUserPhone}
+              style={{
+                flex: 1,
+                fontSize: 16,
+                fontWeight: 'bold',
+                backgroundColor: '#fff',
+                color: '#c62358',
+                borderRadius: 5,
+                padding: 5,
+                margin: 2,
+                borderColor: '#c62358',
+                tintColor: '#c62358',
+              }}
+              placeholder="Phone"
+              underlineColorAndroid="transparent"
+              onChangeText={email => textInputChange('email', email)}
+            />
 
-          <TextInput
+            <Text style={styles.errorMsg}> {emailError}</Text>
+          </View>
+
+          <View
             style={{
-              fontSize: 16,
-              fontWeight: 'bold',
-              backgroundColor: '#f5f5f5',
-              color: '#c62358',
-              borderRadius: 5,
-              padding: 5,
-              margin: 2,
-              borderColor: '#f5f5f5',
+              marginTop: '3%',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+              borderWidth: 0.5,
+              borderColor: inputBackgroundPassword,
+              height: '10%',
               borderRadius: 15,
-              borderWidth: 1.5,
-            }}
-            placeholder="Confrim Password"
-            onChangeText={confrim_assword =>
-              textInputChange('confrim_password', confrim_password)
-            }
-          />
-          <Text style={styles.errorMsg}> {ConfirmPasswordError} </Text>
+              margin: 0,
+              borderWidth: 1,
+            }}>
+            <Feather
+              style={{marginLeft: 10}}
+              color={inputBackgroundPassword}
+              name="unlock"
+              size={18}
+            />
+
+            <TextInput
+              onFocus={() => setinputBackgroundPassword('#c62358')}
+              onBlur={() => setinputBackgroundPassword('gray')}
+              placeholderTextColor={inputBackgroundPassword}
+              style={{
+                flex: 1,
+                fontSize: 16,
+                fontWeight: 'bold',
+                backgroundColor: '#fff',
+                color: '#c62358',
+                borderRadius: 5,
+                padding: 5,
+                margin: 2,
+                tintColor: '#c62358',
+              }}
+              placeholder="********"
+              underlineColorAndroid="transparent"
+              onChangeText={password =>
+                textInputChange('resetpassword', password)
+              }
+            />
+
+            <Text style={styles.errorMsg}> {passwordError} </Text>
+          </View>
+
+          <View
+            style={{
+              marginTop: '3%',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+              borderWidth: 0.5,
+              borderColor: setinputBackgroundPasswordCn,
+              height: '10%',
+              borderRadius: 15,
+              borderWidth: 1,
+            }}>
+            <Feather
+              style={{marginLeft: 10}}
+              color={inputBackgroundPassword}
+              name="unlock"
+              size={18}
+            />
+
+            <TextInput
+              onFocus={() => setinputBackgroundPasswordCn('#c62358')}
+              onBlur={() => setinputBackgroundPasswordCn('gray')}
+              placeholderTextColor={inputBackgroundPassword}
+              style={{
+                flex: 1,
+                fontSize: 16,
+                fontWeight: 'bold',
+                backgroundColor: '#fff',
+                color: '#c62358',
+                borderRadius: 5,
+                padding: 5,
+                tintColor: '#c62358',
+              }}
+              placeholder="********"
+              underlineColorAndroid="transparent"
+              onChangeText={password =>
+                textInputChange('resetpassword', password)
+              }
+            />
+
+            <Text style={styles.errorMsg}> {ConfirmpasswordError} </Text>
+          </View>
 
           <TouchableOpacity
             onPress={() => {
@@ -275,7 +413,7 @@ function RegisterScreen({navigation}) {
               justifyContent: 'center',
               borderRadius: 20,
               alignItems: 'center',
-              height: '8%',
+              height: '10%',
               marginTop: 15,
             }}>
             <Text
@@ -296,7 +434,7 @@ function RegisterScreen({navigation}) {
               width: 300,
               fontFamily: 'louis george cafe',
               opacity: 0.699999988079071,
-              marginTop: 30,
+              marginTop: '5%',
               color: '#303030',
             }}>
             Already have an account?{' '}

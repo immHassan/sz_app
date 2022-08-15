@@ -7,9 +7,16 @@ import {
   ScrollView,
   ImageBackground,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const renderItem = item => {
   console.log(item);
@@ -30,58 +37,236 @@ const itemsData = {
 
 const ScheduleScreen = ({navigation}) => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: 20,
-        }}>
-        <Text style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}>
-          Hello John Doe
+    <SafeAreaView style={{flex: 1, backgroundColor: '#c62358'}}>
+      <View style={{flex: 0.05, backgroundColor: '#E15E97'}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            alignContent: 'center',
+            margin: '1%',
+            color: '#ffff',
+            fontSize: 14,
+          }}>
+          <AntDesign name="warning" size={14} color={'#fa6881'} /> We're hiring!
+          Check out Careers to learn more.
         </Text>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <ImageBackground
-            source={require('../assets/images/user-profile.jpg')}
-            style={{width: 35, height: 35}}
-            imageStyle={{borderRadius: 25}}
-          />
-        </TouchableOpacity>
       </View>
 
-      {/* <CalendarList
-         markingType={'period'}
-         markedDates={{
-           '2022-07-16': {
-             selected: true,
-             marked: true,
-             color: 'red',
-           },
-           '2022-07-17': {startingDay: true, color: '#0770dffa'},
-           '2022-07-18': {
-             selected: true,
-             endingDay: true,
-             color: '#0770dffa',
-           },
-           '2022-07-19': {disabled: true, disableTouchEvent: true},
-         }}
-         // Callback which gets executed when visible months change in scroll view. Default = undefined
-         onVisibleMonthsChange={months => {
-           console.log('now these months are visible', months);
-         }}
-         // Max amount of months allowed to scroll to the past. Default = 50
-         pastScrollRange={10}
-         // Max amount of months allowed to scroll to the future. Default = 50
-         futureScrollRange={10}
-         // Enable or disable scrolling of calendar list
-         scrollEnabled={true}
-         calendarWidth={320}
-         pagingEnabled={true}
-         // Enable or disable vertical scroll indicator. Default = false
-         showScrollIndicator={true}
-         horizontal={true}
-       /> */}
-      <Agenda renderItem={renderItem} items={itemsData} />
+      <View style={{flex: 0.05, textAlign: 'center', alignContent: 'center'}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            alignContent: 'center',
+            margin: '1%',
+            color: '#ffff',
+            fontSize: 14,
+          }}>
+          Upcomming Classes
+        </Text>
+      </View>
+
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            marginHorizontal: Dimensions.get('window').width * 0.05,
+            borderRadius: Dimensions.get('window').width * 0.08,
+            borderColor: '#B20E44',
+            borderWidth: Dimensions.get('window').width * 0.025,
+          }}>
+          <Calendar
+            theme={{
+              'stylesheet.day.basic': {
+                base: {
+                  height: Dimensions.get('window').height * 0.025,
+                },
+              },
+              backgroundColor: '#b20e44',
+              calendarBackground: '#b20e44',
+              textColor: '#fff',
+              monthTextColor: '#fff',
+              textMonthFontSize: Dimensions.get('window').height * 0.025,
+              textMonthFontWeight: '800',
+              textDayFontSize: Dimensions.get('window').height * 0.015,
+              arrowColor: '#fff',
+              dayTextColor: '#fff',
+            }}
+          />
+        </View>
+
+        <View
+          style={{
+            marginHorizontal: Dimensions.get('window').width * 0.05,
+            marginTop: Dimensions.get('window').width * 0.025,
+          }}>
+          <Text style={{color: '#fff', fontWeight: '800'}}>Other Services</Text>
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+            marginHorizontal: Dimensions.get('window').width * 0.1,
+            marginTop: Dimensions.get('window').width * 0.025,
+          }}>
+          <View
+            style={{
+              backgroundColor: '#ffffff',
+              height: Dimensions.get('window').height * 0.001,
+              marginHorizontal: Dimensions.get('window').width * 0.01,
+              marginVertical: Dimensions.get('window').height * 0.01,
+            }}></View>
+
+          <View
+            style={{
+              flex: 0.8,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View style={styles.box}>
+              <View
+                style={{
+                  flex: 0.3,
+                }}></View>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  flex: 0.4,
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  justifyContent: 'space-evenly',
+                }}>
+                <Feather
+                  name="monitor"
+                  size={Dimensions.get('window').width * 0.09}
+                  color={'#fff'}
+                />
+                <Text
+                  style={{
+                    fontSize: Dimensions.get('window').width * 0.025,
+                    fontWeight: '600',
+                    color: '#fff',
+                  }}>
+                  Membership
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flex: 0.3,
+                }}></View>
+            </View>
+
+            <View style={styles.box}>
+              <View
+                style={{
+                  flex: 0.3,
+                }}></View>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  flex: 0.4,
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  justifyContent: 'space-evenly',
+                }}>
+                <MaterialCommunityIcons
+                  name="account-cowboy-hat-outline"
+                  size={Dimensions.get('window').width * 0.09}
+                  color={'#fff'}
+                />
+
+                <Text
+                  style={{
+                    fontSize: Dimensions.get('window').width * 0.025,
+                    fontWeight: '600',
+                    color: '#fff',
+                  }}>
+                  Classes
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flex: 0.3,
+                }}></View>
+            </View>
+          </View>
+
+          {/* ////////////////// */}
+
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={styles.box}>
+              <View
+                style={{
+                  flex: 0.3,
+                }}></View>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  flex: 0.4,
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  justifyContent: 'space-evenly',
+                }}>
+                <Ionicons
+                  name="md-reorder-four-sharp"
+                  size={Dimensions.get('window').width * 0.09}
+                  color={'#fff'}
+                />
+                <Text
+                  style={{
+                    fontSize: Dimensions.get('window').width * 0.025,
+                    fontWeight: '600',
+                    color: '#fff',
+                  }}>
+                  Rental
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flex: 0.3,
+                }}></View>
+            </View>
+
+            <View style={styles.box}>
+              <View
+                style={{
+                  flex: 0.3,
+                }}></View>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  flex: 0.4,
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  justifyContent: 'space-evenly',
+                }}>
+                <FontAwesome5
+                  name="file-invoice"
+                  size={Dimensions.get('window').width * 0.09}
+                  color={'#fff'}
+                />
+                <Text
+                  style={{
+                    fontSize: Dimensions.get('window').width * 0.025,
+                    fontWeight: '600',
+                    color: '#fff',
+                  }}>
+                  Invoices
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flex: 0.3,
+                }}></View>
+            </View>
+          </View>
+
+          {/* ////////////////// */}
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -97,6 +282,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+  },
+  box: {
+    flex: 1,
+    flexDirection: 'row',
+    height: Dimensions.get('window').height * 0.12,
+    marginHorizontal: Dimensions.get('window').width * 0.008,
+    alignItems: 'center',
+    backgroundColor: '#b10e43',
   },
 });
 

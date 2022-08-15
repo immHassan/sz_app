@@ -16,7 +16,7 @@ export default function ListItem({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 2,
       }}>
       <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
         <Image
