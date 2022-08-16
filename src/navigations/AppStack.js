@@ -52,6 +52,11 @@ const AppStack = ({UserReducer, user_logout, user_login}) => {
   const Profile = () => {
     return <TabNavigator data={'Profile'}></TabNavigator>;
   };
+
+  const Password = () => {
+    return <TabNavigator data={'Password'}></TabNavigator>;
+  };
+
   const Home = () => {
     return <TabNavigator data={'Home'}></TabNavigator>;
   };
@@ -67,9 +72,13 @@ const AppStack = ({UserReducer, user_logout, user_login}) => {
   const Setting = () => {
     return <TabNavigator data={'ProfileSetting'}></TabNavigator>;
   };
-  const MomScreen = () =>{
+  const MomScreen = () => {
     return <TabNavigator data={'MomentsScreen'}></TabNavigator>;
-  }
+  };
+
+  const Videos = () => {
+    return <TabNavigator data={'videos'}></TabNavigator>;
+  };
 
   return !appStack ? (
     <AuthStack> </AuthStack>
@@ -106,11 +115,13 @@ const AppStack = ({UserReducer, user_logout, user_login}) => {
 
       <Drawer.Screen name="Images" component={Images} />
 
+      <Drawer.Screen name="Videos" component={Videos} />
+
       <Drawer.Screen name="MomentsScreen" component={MomScreen} />
 
-      <Drawer.Screen name="Profile Settings" component={Setting} />
+      <Drawer.Screen name="Profile Settings" component={Profile} />
 
-      <Drawer.Screen name="Password Settings" component={MomentsScreen} />
+      <Drawer.Screen name="Password Settings" component={Password} />
     </Drawer.Navigator>
   );
 };

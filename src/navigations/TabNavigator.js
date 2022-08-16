@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
@@ -38,11 +38,17 @@ import ProfileScreen from '../screens/ProfileScreen';
 import ProfilePasswordScreen from '../screens/ProfilePasswordScreen';
 import MomentsScreen from '../screens/MomentsScreen';
 import MessagesScreen from '../screens/MessagesScreen';
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const TabNavigator = data => {
+  React.useEffect(() => {
+    console.log('22');
+  }, []);
   const CallNav = () => {
+    console.log('data.data', data.data);
+
     if (data.data == 'Profile') {
       return <ProfileScreen />;
     } else if (data.data == 'Home' || data.data == 'Classes') {
@@ -51,15 +57,20 @@ const TabNavigator = data => {
       return <MessagesScreen />;
     } else if (data.data == 'images') {
       return <GalleryScreen />;
+    } else if (data.data == 'videos') {
+      return <VideosScreen />;
     } else if (data.data == 'ProfileSetting') {
       return <SettingsScreen />;
     } else if (data.data == 'MomentsScreen') {
       return <MomentsScreen />;
+    } else if (data.data == 'Password') {
+      return <ProfilePasswordScreen />;
     }
   };
 
   return (
     <Tab.Navigator
+      initialRouteName=""
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -88,7 +99,7 @@ const TabNavigator = data => {
 
       <Tab.Screen
         name="Schedule"
-        component={ProfilePasswordScreen}
+        component={ScheduleScreen}
         options={({route}) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
@@ -107,7 +118,7 @@ const TabNavigator = data => {
       />
 
       <Tab.Screen
-        name="Schedule12"
+        name="SZ"
         component={GalleryScreen}
         options={({route}) => ({
           tabBarStyle: {
@@ -150,7 +161,7 @@ const TabNavigator = data => {
 
       <Tab.Screen
         name="Favorite"
-        component={SettingsScreen}
+        component={ProfileScreen}
         options={({route}) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),

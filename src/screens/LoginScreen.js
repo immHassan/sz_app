@@ -380,12 +380,11 @@ function LoginScreen({navigation, UserReducer, user_login}) {
 
           <TouchableOpacity
             onPress={() => {
-              // setotp(true);
-              // setforgetPassword(false);
-              // setresetPassword(false);
-              // setpasswordChanged(false);
-              // setvisible(true);
-              _onPressLogIn();
+              setotp(true);
+              setforgetPassword(false);
+              setresetPassword(false);
+              setpasswordChanged(false);
+              setvisible(true);
             }}
             style={{
               position: 'relative',
@@ -613,19 +612,11 @@ function LoginScreen({navigation, UserReducer, user_login}) {
 
             <TouchableOpacity
               onPress={() => {
-                Alert.alert(
-                  'Confirmation',
-                  'Are you sure you entered correct details',
-                  [
-                    {
-                      text: 'Yes',
-                      onPress: () => {
-                        login();
-                      },
-                    },
-                    {text: 'No'},
-                  ],
-                );
+                setotp(false);
+                setforgetPassword(false);
+                setresetPassword(true);
+                setpasswordChanged(false);
+                setvisible(true);
               }}
               style={{
                 position: 'relative',
@@ -778,11 +769,7 @@ function LoginScreen({navigation, UserReducer, user_login}) {
 
             <TouchableOpacity
               onPress={() => {
-                setotp(false);
-                setforgetPassword(false);
-                setresetPassword(true);
-                setpasswordChanged(false);
-                setvisible(true);
+                _onPressLogIn();
               }}
               style={{
                 position: 'relative',
@@ -902,7 +889,7 @@ function LoginScreen({navigation, UserReducer, user_login}) {
                 onFocus={() => setinputBackgroundPassword('#c62358')}
                 onBlur={() => setinputBackgroundPassword('gray')}
                 placeholderTextColor={inputBackgroundPassword}
-                secureTextEntry = {true}
+                secureTextEntry={true}
                 style={{
                   flex: 1,
                   fontSize: 16,
@@ -960,7 +947,7 @@ function LoginScreen({navigation, UserReducer, user_login}) {
                 onFocus={() => setinputBackgroundPasswordCn('#c62358')}
                 onBlur={() => setinputBackgroundPasswordCn('gray')}
                 placeholderTextColor={inputBackgroundPassword}
-                secureTextEntry = {true}
+                secureTextEntry={true}
                 style={{
                   flex: 1,
                   fontSize: 16,
