@@ -27,8 +27,6 @@ const AuthStack = ({UserReducer, user_logout, user_login}) => {
   const [appStack, setappStack] = React.useState(false);
 
   React.useEffect(() => {
-    console.log('UserReducer ---------', UserReducer);
-
     AsyncStorage.getItem('authToken', (err, result) => {
       console.log('result', result);
       if (result) {

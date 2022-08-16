@@ -8,6 +8,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import ProfileScreen from '../screens/ProfileScreen';
 import MessagesScreen from '../screens/MessagesScreen';
 import MomentsScreen from '../screens/MomentsScreen';
+
+import GalleryScreen from '../screens/GalleryScreen';
+
 import SettingsScreen from '../screens/SettingsScreen';
 
 import TabNavigator from './TabNavigator';
@@ -23,10 +26,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Drawer = createDrawerNavigator();
 
 const AppStack = ({UserReducer, user_logout, user_login}) => {
-  const [appStack, setappStack] = React.useState(false);
+  const [appStack, setappStack] = React.useState(true);
 
   React.useEffect(() => {
-    console.log('UserReducer', UserReducer.isUserLogin);
+    console.log('UserReducer', UserReducer);
 
     AsyncStorage.getItem('authToken', (err, result) => {
       if (result) {
@@ -35,7 +38,7 @@ const AppStack = ({UserReducer, user_logout, user_login}) => {
       }
     });
 
-    if (UserReducer.isUserLogin) {
+    if (UserReducer) {
       setappStack(true);
     } else {
       setappStack(false);
@@ -43,7 +46,6 @@ const AppStack = ({UserReducer, user_logout, user_login}) => {
   }, [UserReducer]);
 
   const logout = () => {
-    console.log('testing');
     user_logout();
   };
 
@@ -71,8 +73,8 @@ const AppStack = ({UserReducer, user_logout, user_login}) => {
           height: Dimensions.get('window').height * 0.04,
         },
       }}>
-      <Drawer.Screen name="Account" component={TabNavigator} options={{}} />
-      <Drawer.Screen name="Classes" component={ScheduleScreen} />
+      <Drawer.Screen name="Home" component={TabNavigator} options={{}} />
+      <Drawer.Screen name="Classes" component={TabNavigator} options={{}} />
 
       <Drawer.Screen name="About" component={ProfileScreen} />
 
@@ -82,7 +84,7 @@ const AppStack = ({UserReducer, user_logout, user_login}) => {
 
       <Drawer.Screen name="Rental Products" component={MomentsScreen} />
 
-      <Drawer.Screen name="Images" component={MomentsScreen} />
+      <Drawer.Screen name="Images" component={TabNavigator} />
 
       <Drawer.Screen name="MomentsScreen" component={MomentsScreen} />
 
