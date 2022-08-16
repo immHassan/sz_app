@@ -199,6 +199,7 @@ function RegisterScreen({navigation}) {
               onFocus={() => setinputBackgroundUserName('#c62358')}
               onBlur={() => setinputBackgroundUserName('gray')}
               placeholderTextColor={inputBackgroundUserName}
+              secureTextEntry = {true}
               style={{
                 flex: 1,
                 fontSize: 16,
@@ -242,6 +243,7 @@ function RegisterScreen({navigation}) {
                 flex: 1,
                 fontSize: 16,
                 fontWeight: 'bold',
+                fontFamily: 'Louis George Cafe',
                 backgroundColor: '#fff',
                 color: '#c62358',
                 borderRadius: 5,
@@ -326,6 +328,7 @@ function RegisterScreen({navigation}) {
               onFocus={() => setinputBackgroundPassword('#c62358')}
               onBlur={() => setinputBackgroundPassword('gray')}
               placeholderTextColor={inputBackgroundPassword}
+              secureTextEntry = {true}
               style={{
                 flex: 1,
                 fontSize: 16,
@@ -371,6 +374,7 @@ function RegisterScreen({navigation}) {
               onFocus={() => setinputBackgroundPasswordCn('#c62358')}
               onBlur={() => setinputBackgroundPasswordCn('gray')}
               placeholderTextColor={inputBackgroundPassword}
+              secureTextEntry = {true}
               style={{
                 flex: 1,
                 fontSize: 16,

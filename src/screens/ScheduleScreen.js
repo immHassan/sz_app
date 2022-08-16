@@ -37,13 +37,14 @@ const itemsData = {
 
 const ScheduleScreen = ({navigation}) => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#c62358'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#C62358'}}>
       <View style={{flex: 0.05, backgroundColor: '#E15E97'}}>
         <Text
           style={{
             textAlign: 'center',
             alignContent: 'center',
             margin: '1%',
+            fontFamily: '',
             color: '#ffff',
             fontSize: 14,
           }}>
@@ -80,7 +81,8 @@ const ScheduleScreen = ({navigation}) => {
                   height: Dimensions.get('window').height * 0.025,
                 },
               },
-              backgroundColor: '#b20e44',
+              backgroundColor: '#B20E44',
+              fontFamily: 'Titillium Web',
               calendarBackground: '#b20e44',
               textColor: '#fff',
               monthTextColor: '#fff',
@@ -98,7 +100,7 @@ const ScheduleScreen = ({navigation}) => {
             marginHorizontal: Dimensions.get('window').width * 0.05,
             marginTop: Dimensions.get('window').width * 0.025,
           }}>
-          <Text style={{color: '#fff', fontWeight: '800'}}>Other Services</Text>
+          <Text style={{color: '#fff', fontWeight: '800',fontFamily: 'Louis George Café',}}>Other Services</Text>
         </View>
 
         <View
@@ -110,7 +112,8 @@ const ScheduleScreen = ({navigation}) => {
           <View
             style={{
               backgroundColor: '#ffffff',
-              height: Dimensions.get('window').height * 0.001,
+              opacity: 0.2,
+              height: Dimensions.get('window').height * 0.002,
               marginHorizontal: Dimensions.get('window').width * 0.01,
               marginVertical: Dimensions.get('window').height * 0.01,
             }}></View>
@@ -137,12 +140,12 @@ const ScheduleScreen = ({navigation}) => {
                 }}>
                 <Feather
                   name="monitor"
-                  size={Dimensions.get('window').width * 0.09}
+                  size={Dimensions.get('window').width * 0.1}
                   color={'#fff'}
                 />
                 <Text
                   style={{
-                    fontSize: Dimensions.get('window').width * 0.025,
+                    fontSize: Dimensions.get('window').width * 0.026,
                     fontWeight: '600',
                     color: '#fff',
                   }}>
@@ -171,13 +174,13 @@ const ScheduleScreen = ({navigation}) => {
                 }}>
                 <MaterialCommunityIcons
                   name="account-cowboy-hat-outline"
-                  size={Dimensions.get('window').width * 0.09}
+                  size={Dimensions.get('window').width * 0.1}
                   color={'#fff'}
                 />
 
                 <Text
                   style={{
-                    fontSize: Dimensions.get('window').width * 0.025,
+                    fontSize: Dimensions.get('window').width * 0.026,
                     fontWeight: '600',
                     color: '#fff',
                   }}>
@@ -210,12 +213,12 @@ const ScheduleScreen = ({navigation}) => {
                 }}>
                 <Ionicons
                   name="md-reorder-four-sharp"
-                  size={Dimensions.get('window').width * 0.09}
+                  size={Dimensions.get('window').width * 0.1}
                   color={'#fff'}
                 />
                 <Text
                   style={{
-                    fontSize: Dimensions.get('window').width * 0.025,
+                    fontSize: Dimensions.get('window').width * 0.026,
                     fontWeight: '600',
                     color: '#fff',
                   }}>
@@ -244,12 +247,12 @@ const ScheduleScreen = ({navigation}) => {
                 }}>
                 <FontAwesome5
                   name="file-invoice"
-                  size={Dimensions.get('window').width * 0.09}
+                  size={Dimensions.get('window').width * 0.1}
                   color={'#fff'}
                 />
                 <Text
                   style={{
-                    fontSize: Dimensions.get('window').width * 0.025,
+                    fontSize: Dimensions.get('window').width * 0.026,
                     fontWeight: '600',
                     color: '#fff',
                   }}>

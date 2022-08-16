@@ -19,9 +19,9 @@ function SplashScreen1({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={require('../assets/images/splash/bg.png')}></Image>
-
-      <Text>test</Text>
+      <Image style={{
+    height:Dimensions.get('window').height* 1,
+    width:Dimensions.get('window').width * 1}} source={require('../assets/images/splash/bg.png')}></Image>
     </SafeAreaView>
   );
 }

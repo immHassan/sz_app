@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     width: Dimensions.get('window').width,
     height: '100%',
+    backgroundColor:'#C62358',
   },
   logo: {},
   wrapDot: {

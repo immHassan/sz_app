@@ -293,6 +293,7 @@ function LoginScreen({navigation, UserReducer, user_login}) {
                 flex: 1,
                 fontSize: 16,
                 fontWeight: 'bold',
+                fontFamily: 'Louis George Café',
                 backgroundColor: '#fff',
                 color: '#c62358',
                 borderRadius: 5,
@@ -333,10 +334,13 @@ function LoginScreen({navigation, UserReducer, user_login}) {
             <TextInput
               onFocus={() => setinputBackgroundPassword('#c62358')}
               onBlur={() => setinputBackgroundPassword('gray')}
+              secureTextEntry={true}
               placeholderTextColor={inputBackgroundPassword}
               style={{
                 flex: 1,
                 fontSize: 16,
+                fontFamily: 'Louis George Cafe',
+                opacity: 0.69,
                 fontWeight: 'bold',
                 backgroundColor: '#fff',
                 color: '#c62358',
@@ -898,6 +902,7 @@ function LoginScreen({navigation, UserReducer, user_login}) {
                 onFocus={() => setinputBackgroundPassword('#c62358')}
                 onBlur={() => setinputBackgroundPassword('gray')}
                 placeholderTextColor={inputBackgroundPassword}
+                secureTextEntry = {true}
                 style={{
                   flex: 1,
                   fontSize: 16,
@@ -955,6 +960,7 @@ function LoginScreen({navigation, UserReducer, user_login}) {
                 onFocus={() => setinputBackgroundPasswordCn('#c62358')}
                 onBlur={() => setinputBackgroundPasswordCn('gray')}
                 placeholderTextColor={inputBackgroundPassword}
+                secureTextEntry = {true}
                 style={{
                   flex: 1,
                   fontSize: 16,
