@@ -53,8 +53,8 @@ const TabNavigator = data => {
       return <GalleryScreen />;
     } else if (data.data == 'ProfileSetting') {
       return <SettingsScreen />;
-    } else if (data.data == 'MomentsScreen'){
-      return <MomentsScreen/>
+    } else if (data.data == 'MomentsScreen') {
+      return <MomentsScreen />;
     }
   };
 
