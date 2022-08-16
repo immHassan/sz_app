@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   View,
@@ -10,7 +11,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}) => {
   return (
     <View>
       <View

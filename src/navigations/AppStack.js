@@ -49,6 +49,28 @@ const AppStack = ({UserReducer, user_logout, user_login}) => {
     user_logout();
   };
 
+  const Profile = () => {
+    return <TabNavigator data={'Profile'}></TabNavigator>;
+  };
+  const Home = () => {
+    return <TabNavigator data={'Home'}></TabNavigator>;
+  };
+  const MemberShip = () => {
+    return <TabNavigator data={'messageScreen'}></TabNavigator>;
+  };
+  const Rental = () => {
+    return <TabNavigator data={'rental'}></TabNavigator>;
+  };
+  const Images = () => {
+    return <TabNavigator data={'images'}></TabNavigator>;
+  };
+  const Setting = () => {
+    return <TabNavigator data={'ProfileSetting'}></TabNavigator>;
+  };
+  const MomScreen = () =>{
+    return <TabNavigator data={'MomentsScreen'}></TabNavigator>;
+  }
+
   return !appStack ? (
     <AuthStack> </AuthStack>
   ) : (
@@ -73,24 +95,20 @@ const AppStack = ({UserReducer, user_logout, user_login}) => {
           height: Dimensions.get('window').height * 0.04,
         },
       }}>
-      <Drawer.Screen name="Home" component={TabNavigator} options={{}} />
-      <Drawer.Screen name="Classes" component={TabNavigator} options={{}} />
+      <Drawer.Screen name="Home" component={Home} options={{}} />
+      <Drawer.Screen name="Profile" component={Profile} />
+      {/* screen MemberShip = MessageScree */}
+      <Drawer.Screen name="Membership" component={MemberShip} />
+      {/* rental = MomentsScreen */}
+      <Drawer.Screen name="Rental" component={Rental} />
 
-      <Drawer.Screen name="About" component={ProfileScreen} />
+      <Drawer.Screen name="Rental Products" component={Rental} />
 
-      <Drawer.Screen name="Membership" component={MessagesScreen} />
+      <Drawer.Screen name="Images" component={Images} />
 
-      <Drawer.Screen name="Rental" component={MomentsScreen} />
+      <Drawer.Screen name="MomentsScreen" component={MomScreen} />
 
-      <Drawer.Screen name="Rental Products" component={MomentsScreen} />
-
-      <Drawer.Screen name="Images" component={TabNavigator} />
-
-      <Drawer.Screen name="MomentsScreen" component={MomentsScreen} />
-
-      <Drawer.Screen name="Settings" component={MomentsScreen} />
-
-      <Drawer.Screen name="Profile Settings" component={MomentsScreen} />
+      <Drawer.Screen name="Profile Settings" component={Setting} />
 
       <Drawer.Screen name="Password Settings" component={MomentsScreen} />
     </Drawer.Navigator>
