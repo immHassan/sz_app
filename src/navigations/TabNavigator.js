@@ -34,6 +34,10 @@ import ScheduleScreen from '../screens/ScheduleScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import GalleryScreen from '../screens/GalleryScreen';
 import VideosScreen from '../screens/VideosScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import ProfilePasswordScreen from '../screens/ProfilePasswordScreen';
+
+ProfilePasswordScreen;
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -69,7 +73,7 @@ const TabNavigator = () => {
 
       <Tab.Screen
         name="Schedule"
-        component={GalleryScreen}
+        component={ProfilePasswordScreen}
         options={({route}) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
@@ -181,7 +185,7 @@ const TabNavigator = () => {
 const getTabBarVisibility = route => {
   // console.log(route);
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
-  // console.log(routeName);
+  console.log(routeName);
 
   if (routeName == 'GameDetails') {
     return 'none';
