@@ -34,11 +34,31 @@ import ScheduleScreen from '../screens/ScheduleScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import GalleryScreen from '../screens/GalleryScreen';
 import VideosScreen from '../screens/VideosScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import MomentsScreen from '../screens/MomentsScreen';
+import MessagesScreen from '../screens/MessagesScreen';
 
+ProfileScreen;
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const TabNavigator = () => {
+const TabNavigator = data => {
+  const CallNav = () => {
+    if (data.data == 'Profile') {
+      return <ProfileScreen />;
+    } else if (data.data == 'Home' || data.data == 'Classes') {
+      return <ScheduleScreen />;
+    } else if (data.data == 'memberShip') {
+      return <MessagesScreen />;
+    } else if (data.data == 'images') {
+      return <GalleryScreen />;
+    } else if (data.data == 'ProfileSetting') {
+      return <SettingsScreen />;
+    } else if (data.data == 'MomentsScreen'){
+      return <MomentsScreen/>
+    }
+  };
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -49,8 +69,8 @@ const TabNavigator = () => {
         tabBarActiveTintColor: '#c62358',
       }}>
       <Tab.Screen
-        name="Home"
-        component={ScheduleScreen}
+        name="home"
+        component={CallNav}
         options={({route}) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
