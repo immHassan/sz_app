@@ -35,14 +35,8 @@ import SettingsScreen from '../screens/SettingsScreen';
 import GalleryScreen from '../screens/GalleryScreen';
 import VideosScreen from '../screens/VideosScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-<<<<<<< HEAD
-import ProfilePasswordScreen from '../screens/ProfilePasswordScreen';
-
-ProfilePasswordScreen;
-=======
 import MomentsScreen from '../screens/MomentsScreen';
 import MessagesScreen from '../screens/MessagesScreen';
->>>>>>> 9af39c665b5d4ff0df2e2a498fccf85fdeeb9987
 
 ProfileScreen;
 const Tab = createBottomTabNavigator();
